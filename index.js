@@ -1,33 +1,28 @@
-let content = ""
-const mockJson = require("./mock.json")
-
-const qars = (newContent) => {
-        content = newContent
-        console.log({content, newContent})
-    }
-
 const axios = require("axios")
-const http = require('http')
+const http = require("http")
 
-http.createServer(async function (req, res) {
-    if (content === "") {
-        const response = await axios(req)
-        res.writeHead(response.status, response.statusText, response.headers)
-        res.write(response.data)
-        res.end()
-    } else {
-        res.writeHead(203, { 'Content-Type': 'application/json' })
-        res.write(JSON.stringify({
-            content,
-            headers: req.headers
-        }, true, 2))
-        res.end()
-        content = ""
+/**
+ * Sets up the proxy server which will pass through all requests (both nocked
+ * and unnocked.)
+ * @param  {} port
+ */
+module.exports = (port) => {
+    if (port === undefined || typeof port !== "number") {
+        throw new Error("No port specified.")
     }
-}).listen(8081)
-
-
-setTimeout(() => {
-    qars(mockJson)
-},6000)
-
+    return http
+        .createServer(async (req, res) => {
+            // Delete accept header due to nock conflict
+            delete req.headers.accept
+            const response = await axios(req)
+            let content = response.data
+            // If response is a JSON, turn it into a buffer
+            if (typeof response.data === "object") {
+                content = JSON.stringify(content)
+            }
+            res.writeHead(response.status, response.headers)
+            res.write(content)
+            res.end()
+        })
+        .listen(port)
+}
