@@ -1,7 +1,7 @@
 {
-    "name": "apimocktester",
+    "name": "nocke2e",
     "version": "1.0.0",
-    "description": "",
+    "description": "Mocking for End-To-End Tests and Browser Automation",
     "main": "index.js",
     "dependencies": {
         "axios": "^0.18.0"
@@ -25,6 +25,6 @@
             "*.json": ["prettier --write", "git add"]
         }
     },
-    "author": "Rick Schubert - rickschubert@gmx.de",
+    "author": "Rick Schubert - GH rickschubert - rickschubert@gmx.de",
     "license": "ISC"
 }
