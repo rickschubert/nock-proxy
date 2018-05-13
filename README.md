@@ -5,6 +5,12 @@ nocke2e: Mocking for End-To-End Tests and Browser Automation
 Mock network requests with [nock](https://github.com/node-nock/nock) - in
 end-to-end tests on a real browser.
 
+# Install
+
+```
+npm install nocke2e
+```
+
 # How does it work
 Nock overrides the `http.request` function of the node request it is running in.
 This means that we can spawn a simple pass-through proxy server in the same
