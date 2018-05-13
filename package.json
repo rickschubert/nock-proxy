@@ -1,6 +1,6 @@
 {
     "name": "nocke2e",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Mocking for End-To-End Tests and Browser Automation",
     "main": "index.js",
     "dependencies": {
