@@ -1,11 +1,11 @@
 const axios = require("axios")
-const nocke2e = require("./../index")
+const nockProxy = require("./../index")
 const nock = require("nock")
 
-describe("nocke2e() without any setup", () => {
+describe("nockProxy() without any setup", () => {
     test("Requests are being passed through unmodified", async () => {
         const srcResp = await axios.get("http://www.example.de/")
-        const proxy = nocke2e(8095)
+        const proxy = nockProxy(8095)
         const proxyResp = await axios.get("http://www.example.de/", {
             proxy: {
                 host: "127.0.0.1",
@@ -24,9 +24,9 @@ describe("nocke2e() without any setup", () => {
     })
 })
 
-describe("nocke2e() with nocks", () => {
+describe("nockProxy() with nocks", () => {
     test("1 nock() setup: First request to that URL is mocked, following ones are real", async () => {
-        const proxy = nocke2e(8095)
+        const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.example.de", { allowUnmocked: true })
             .get(/.*/)
@@ -55,7 +55,7 @@ describe("nocke2e() with nocks", () => {
 
     test("1 nock() setup: Requests not going to the nock URL serve real responses", async () => {
         const srcResp = await axios.get("http://www.example.de/")
-        const proxy = nocke2e(8095)
+        const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.hallopizza.de", { allowUnmocked: true })
             .get(/.*/)
@@ -81,7 +81,7 @@ describe("nocke2e() with nocks", () => {
     })
 
     test("1 nock() setup with persist: Requests to that URL are always mocked", async () => {
-        const proxy = nocke2e(8095)
+        const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.example.de", { allowUnmocked: true })
             .get(/.*/)
@@ -112,7 +112,7 @@ describe("nocke2e() with nocks", () => {
     it("Multiple nock() setups: Requests to these URLs are mocked", async () => {
         const exampleSrcResp = await axios.get("http://www.example.de/")
         const pizzaSrcResp = await axios.get("http://www.hallopizza.de/")
-        const proxy = nocke2e(8095)
+        const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.example.de", { allowUnmocked: true })
             .get(/.*/)
@@ -123,7 +123,7 @@ describe("nocke2e() with nocks", () => {
         nock("http://www.hallopizza.de", { allowUnmocked: true })
             .get(/.*/)
             .reply(219, {
-                nocke2e: "hallopizza.de",
+                nockProxy: "hallopizza.de",
             })
         const exampleMockResp = await axios.get("http://www.example.de/", {
             proxy: {

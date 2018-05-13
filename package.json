@@ -1,5 +1,5 @@
 {
-    "name": "nocke2e",
+    "name": "nockProxy",
     "version": "1.0.1",
     "description": "Mocking for End-To-End Tests and Browser Automation",
     "main": "index.js",

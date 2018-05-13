@@ -1,7 +1,7 @@
 const nock = require("nock")
-const nocke2e = require("./../index")
+const nockProxy = require("./../index")
 
-nocke2e(8081)
+nockProxy(8081)
 
 nock("http://www.example.de", { allowUnmocked: true })
     .get(/.*/)
@@ -12,5 +12,5 @@ nock("http://www.example.de", { allowUnmocked: true })
 nock("http://www.hallopizza.de", { allowUnmocked: true })
     .get(/.*/)
     .reply(219, {
-        nocke2e: "hallopizza.de",
+        pizza: "party",
     })
