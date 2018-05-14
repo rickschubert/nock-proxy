@@ -36,6 +36,6 @@ nock("http://www.example.de", { allowUnmocked: true })
 ```
 
 # One test for end-to-end and integration
-nockProxy turns end-to-end tests into integration tests: Simply set up the
-browser to pass through nockProxy for having mocks like in an integration test
+nock-proxy turns end-to-end tests into integration tests: Simply set up the
+browser to pass through nock-proxy for having mocks like in an integration test
 environment. Don't pass through the proxy for using real-world network requests.
