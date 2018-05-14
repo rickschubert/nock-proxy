@@ -2,7 +2,7 @@ const nockProxy = require("./../index")
 const portInUse = require("./utils/portInUse")
 
 describe("nockProxy() unit", () => {
-    test("Calling nockProxy() launches the proxy server on the specified port", async () => {
+    it("Calling nockProxy() launches the proxy server on the specified port", async () => {
         const port = 8095
         expect(await portInUse(port)).toBe(false)
         const proxy = nockProxy(port)
@@ -10,7 +10,7 @@ describe("nockProxy() unit", () => {
         proxy.close()
     })
 
-    test("Calling nockProxy() without a port throws an error", async () => {
+    it("Calling nockProxy() without a port throws an error", async () => {
         let errThrown = "No error was thrown."
         try {
             nockProxy()
@@ -20,7 +20,7 @@ describe("nockProxy() unit", () => {
         expect(errThrown).toEqual(new Error("No port specified."))
     })
 
-    test("Calling nockProxy() with non-number port throws an error", async () => {
+    it("Calling nockProxy() with non-number port throws an error", async () => {
         let errThrown = "No error was thrown."
         try {
             const proxy = nockProxy("String")

@@ -3,7 +3,7 @@ const nockProxy = require("./../index")
 const nock = require("nock")
 
 describe("nockProxy() without any setup", () => {
-    test("Requests are being passed through unmodified", async () => {
+    it("Requests are being passed through unmodified", async () => {
         const srcResp = await axios.get("http://www.example.de/")
         const proxy = nockProxy(8095)
         const proxyResp = await axios.get("http://www.example.de/", {
@@ -23,7 +23,7 @@ describe("nockProxy() without any setup", () => {
         proxy.close()
     })
 
-    test("Errors are also being passed through unmodified", async () => {
+    it("Errors are also being passed through unmodified", async () => {
         let srcResp
         try {
             srcResp = await axios.get("http://httpstat.us/404")
@@ -57,7 +57,7 @@ describe("nockProxy() without any setup", () => {
 })
 
 describe("nockProxy() with nocks", () => {
-    test("1 nock() setup: First request to that URL is mocked, following ones are real", async () => {
+    it("1 nock() setup: First request to that URL is mocked, following ones are real", async () => {
         const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.example.de", { allowUnmocked: true })
@@ -85,7 +85,43 @@ describe("nockProxy() with nocks", () => {
         nock.cleanAll()
     })
 
-    test("1 nock() setup: Requests not going to the nock URL serve real responses", async () => {
+    it("1 nock() setup with JSON reply: adds Content-Type header application/json", async () => {
+        const proxy = nockProxy(8095)
+        if (!nock.isActive()) nock.activate()
+        nock("http://www.example.de", { allowUnmocked: true })
+            .get(/.*/)
+            .reply(219, {
+                hello: "world",
+            })
+        const proxyResp = await axios.get("http://www.example.de/", {
+            proxy: {
+                host: "127.0.0.1",
+                port: 8095,
+            },
+        })
+        expect(proxyResp.headers["content-type"]).toBe("application/json")
+        proxy.close()
+        nock.cleanAll()
+    })
+
+    it("1 nock() setup with text reply: Does not add Content-Type header", async () => {
+        const proxy = nockProxy(8095)
+        if (!nock.isActive()) nock.activate()
+        nock("http://www.example.de", { allowUnmocked: true })
+            .get(/.*/)
+            .reply(219, "totally not JSON!")
+        const proxyResp = await axios.get("http://www.example.de/", {
+            proxy: {
+                host: "127.0.0.1",
+                port: 8095,
+            },
+        })
+        expect(proxyResp.headers["content-type"]).toBeUndefined()
+        proxy.close()
+        nock.cleanAll()
+    })
+
+    it("1 nock() setup: Requests not going to the nock URL serve real responses", async () => {
         const srcResp = await axios.get("http://www.example.de/")
         const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
@@ -112,7 +148,7 @@ describe("nockProxy() with nocks", () => {
         nock.cleanAll()
     })
 
-    test("1 nock() setup with persist: Requests to that URL are always mocked", async () => {
+    it("1 nock() setup with persist: Requests to that URL are always mocked", async () => {
         const proxy = nockProxy(8095)
         if (!nock.isActive()) nock.activate()
         nock("http://www.example.de", { allowUnmocked: true })
