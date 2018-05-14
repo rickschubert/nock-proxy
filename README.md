@@ -2,6 +2,7 @@ nock-proxy
 ==========
 [![code style:
 prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Build Status](https://travis-ci.org/rickschubert/nock-proxy.png)](https://travis-ci.org/rickschubert/nock-proxy)
 
 **Mock network requests with [nock](https://github.com/node-nock/nock) through a
 proxy - perfect for real-life environments like end-to-end tests on a real
