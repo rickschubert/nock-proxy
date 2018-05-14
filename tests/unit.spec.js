@@ -3,7 +3,7 @@ const portInUse = require("./utils/portInUse")
 
 describe("nockProxy() unit", () => {
     test("Calling nockProxy() launches the proxy server on the specified port", async () => {
-        const port = 8093
+        const port = 8095
         expect(await portInUse(port)).toBe(false)
         const proxy = nockProxy(port)
         expect(await portInUse(port)).toBe(true)

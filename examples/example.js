@@ -9,8 +9,14 @@ nock("http://www.example.de", { allowUnmocked: true })
         hello: "world",
     })
 
-nock("http://www.hallopizza.de", { allowUnmocked: true })
+nock("http://www.example.de", { allowUnmocked: true })
+    .get(/.*/)
+    .reply(312, {
+        YouAgain: "Yep, it's me again.",
+    })
+
+nock("http://httpstat.us/404", { allowUnmocked: true })
     .get(/.*/)
     .reply(219, {
-        pizza: "party",
+        error: "hidden",
     })

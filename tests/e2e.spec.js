@@ -22,6 +22,38 @@ describe("nockProxy() without any setup", () => {
         /* eslint-enable no-undef */
         proxy.close()
     })
+
+    test("Errors are also being passed through unmodified", async () => {
+        let srcResp
+        try {
+            srcResp = await axios.get("http://httpstat.us/404")
+        } catch (e) {
+            srcResp = e.response
+        }
+
+        const proxy = nockProxy(8095)
+
+        let proxyResp
+        try {
+            proxyResp = await axios.get("http://httpstat.us/404", {
+                proxy: {
+                    host: "127.0.0.1",
+                    port: 8095,
+                },
+            })
+        } catch (e) {
+            proxyResp = e.response
+        }
+        expect(srcResp.data).toEqual(proxyResp.data)
+        expect(srcResp.status).toEqual(proxyResp.status)
+        expect(srcResp.statusText).toEqual(proxyResp.statusText)
+        /* eslint-disable no-undef */
+        for (key in srcResp.headers) {
+            expect(proxyResp.headers).toHaveProperty(key)
+        }
+        /* eslint-enable no-undef */
+        proxy.close()
+    })
 })
 
 describe("nockProxy() with nocks", () => {
