@@ -13,16 +13,20 @@ module.exports = (port) => {
     const proxy = http
         .createServer(async (req, res) => {
             // Delete accept header due to nock conflict
-            delete req.headers.accept
-            const response = await axios(req)
-            let content = response.data
-            // If response is a JSON, turn it into a buffer
-            if (typeof response.data === "object") {
-                content = JSON.stringify(content)
+            try {
+                delete req.headers.accept
+                const response = await axios(req)
+                let content = response.data
+                // If response is a JSON, turn it into a buffer
+                if (typeof response.data === "object") {
+                    content = JSON.stringify(content)
+                }
+                res.writeHead(response.status, response.headers)
+                res.write(content)
+                res.end()
+            } catch (error) {
+                throw error
             }
-            res.writeHead(response.status, response.headers)
-            res.write(content)
-            res.end()
         })
         .listen(port)
     console.log(`nock-proxy running on port ${port}`)
