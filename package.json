@@ -1,6 +1,6 @@
 {
     "name": "nock-proxy",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description":
         "Mock network requests with nock through a proxy - perfect for real-life environments like end-to-end tests on a real browser.",
     "main": "index.js",
