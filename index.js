@@ -10,7 +10,7 @@ module.exports = (port) => {
     if (port === undefined || typeof port !== "number") {
         throw new Error("No port specified.")
     }
-    return http
+    const proxy = http
         .createServer(async (req, res) => {
             // Delete accept header due to nock conflict
             delete req.headers.accept
@@ -25,4 +25,6 @@ module.exports = (port) => {
             res.end()
         })
         .listen(port)
+    console.log(`nock-proxy running on port ${port}`)
+    return proxy
 }
