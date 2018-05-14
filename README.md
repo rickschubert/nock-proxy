@@ -9,7 +9,7 @@ browser.**
 
 # Install
 ```
-npm install nockProxy
+npm install nock-proxy
 ```
 
 # How does it work
@@ -20,7 +20,7 @@ with a mock if said mock is being expected via nock.
 # Example
 ```javascript
 const nock = require("nock")
-const nockProxy = require("nockProxy")
+const nockProxy = require("nock-proxy")
 
 // Launch the proxy server on your desired port on localhost.
 // Don't forget to setup your browser to use this proxy.
